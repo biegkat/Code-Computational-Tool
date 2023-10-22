@@ -214,8 +214,7 @@ def md_make_pdist(inf_dat,dat_b,b,l_max):
 ########################################## MAIN ##########################################
 
 ### Make paths ###
-#INF_ID = "md_inf_" + datetime.datetime.now().strftime("%y%m%d%H%M%S")
-INF_ID = "md_inf_INF_ID"
+INF_ID = "md_inf_" + datetime.datetime.now().strftime("%y%m%d%H%M%S")
 FOLDER_PATH = os.path.join(os.path.abspath(os.getcwd()), "out", INF_ID)
 
 ### Load and bin data ####

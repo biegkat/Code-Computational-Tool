@@ -284,12 +284,11 @@ def ad_make_pdist(inf_dat,dat_b,b,l_max):
 ########################################## MAIN ##########################################
 
 #### ENTER DATA HERE  ####
-SIM_ID = "sim_SIM_ID"
+SIM_ID = "enter sim_SIM_ID here"
 COMMENT = "Here could be your comment."
 
 ### Make paths ###
-#INF_ID = "ad_inf_" + datetime.datetime.now().strftime("%y%m%d%H%M%S")
-INF_ID = "ad_inf_INF_ID"
+INF_ID = "ad_inf_" + datetime.datetime.now().strftime("%y%m%d%H%M%S")
 DATA_PATH = os.path.join(os.path.abspath(os.getcwd()), f"out/{SIM_ID}/simulation/artifical_data.dat")
 FOLDER_PATH = os.path.join(os.path.abspath(os.getcwd()), "out", INF_ID)
 

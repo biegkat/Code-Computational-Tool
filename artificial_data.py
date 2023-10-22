@@ -359,8 +359,7 @@ def document(l):
 """
     
 ### Make paths ###
-#SIM_ID = "sim_" + datetime.datetime.now().strftime("%y%m%d%H%M%S")
-SIM_ID = "sim_SIM_ID"
+SIM_ID = "sim_" + datetime.datetime.now().strftime("%y%m%d%H%M%S")
 FOLDER_PATH = os.path.join(os.path.abspath(os.getcwd()), "out", SIM_ID)
 os.makedirs(FOLDER_PATH, exist_ok=True)
 
