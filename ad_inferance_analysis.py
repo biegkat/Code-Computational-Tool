@@ -12,17 +12,17 @@ import arviz.labels as azl
 
 ########################################## FUNCTIONS ##########################################
 
-def ad_load_data(p=1):
-    """Loads random p% of data (MT lengths) from DATA_PATH and scales it to the max length.
+def ad_load_data(n=0):
+    """Loads random all entries (MT lengths) from DATA_PATH if n=0, or n enrties if n != 0 and scales it to the max length.
 
     Args:
-        - p (float): Percent of the data (MT lengths) that is loaded to be used in the inferance. 
+        - n (int): Number of entries to be loaded. If no arg is given, n defaults to 0 and all data is loaded.
 
     Returns:
-        - dat (numpy.ndarray of float): p% of data (MT lengths) scaled to the max length.
-        - l_mu (float): Mean MT lenght in p% of data (MT lengths).
-        - l_max (float): Max MT lenght in p% of data (MT lengths).
-        - mt_nr (int): Number of MT in p% of data (MT lengths).
+        - dat (numpy.ndarray of float): n/all data entries (MT lengths) scaled to the max length.
+        - l_mu (float): Mean MT length of n/all data entries (MT lengths).
+        - l_max (float): Max MT length of n/all data entries (MT lengths).
+        - mt_nr (int): Number of MT.
     """
     try:
         dat = np.loadtxt(DATA_PATH, dtype=float)
@@ -33,11 +33,12 @@ def ad_load_data(p=1):
     file = np.loadtxt(DATA_PATH, dtype = float)
     for line in file:
         dat.append(line)
+    if n == 0: n = len(dat)
+    dat = np.random.choice(dat, size=int(n), replace=False)
     l_max = max(dat)
     l_mu = np.mean(dat)
     mt_nr = len(dat)
     dat = dat/l_max
-    dat = np.random.choice(dat, size=int(mt_nr*p), replace=False)
     return dat, l_mu, l_max, mt_nr
 
 def bin(dat):
@@ -58,7 +59,7 @@ def scale_r_max_dim(r_max,l_max):
 
     Args:
         - r_max (float): Non dimensional turnover rate (-), scaled with l_max.
-        - l_max (float): Max MT lenght in p% of data.
+        - l_max (float): Max MT length of n/all data entries (MT lengths).
 
     Returns:
         - r (float): Turnover rate (1/s).
@@ -72,7 +73,7 @@ def scale_kappa_max_dim(kappa_max,l_max):
 
     Args:
         - kappa_max (float): Non dimensional severing rate (-), scaled with l_max.
-        - l_max (float): Max MT lenght in p% of data.
+        - l_max (float): Max MT length of n/all data entries (MT lengths).
 
     Returns:
         - kappa (float): Severing rate (1/µm s).
@@ -86,8 +87,8 @@ def scale_r_max_mu(r_max,l_max,l_mu):
 
     Args:
         - r_max (float): Non dimensional turnover rate (-), scaled with l_max.
-        - l_max (float): Max MT lenght in p% of data.
-        - l_mu (float): Mean MT lenght in p% of data.
+        - l_mu (float): Mean MT length of n/all data entries (MT lengths).
+        - l_max (float): Max MT length of n/all data entries (MT lengths).
 
     Returns:
         - r_mu (float): Non dimensional turnover rate (-), scaled with l_mu.
@@ -100,8 +101,8 @@ def scale_kappa_max_mu(kappa_max,l_max,l_mu):
 
     Args:
         - kappa_max (float): Non dimensional severing rate (-), scaled with l_max.
-        - l_max (float): Max MT lenght in p% of data.
-        - l_mu (float): Mean MT lenght in p% of data.
+        - l_mu (float): Mean MT length of n/all data entries (MT lengths).
+        - l_max (float): Max MT length of n/all data entries (MT lengths).
 
     Returns:
         - kappa_mu (float): Non dimensional severing rate (-), scaled with l_mu.
@@ -141,9 +142,9 @@ def ad_document(inf_dat,mt_nr,l_max,l_mu):
 
     Args:
         - inf_dat (arviz.data.inference_data.InferenceData): Object that contains the samples.
-        - mt_nr (int): Number of MT in p% of data (MT lengths).
-        - l_mu (float): Mean MT lenght in p% of data (MT lengths).
-        - l_max (float): Max MT lenght in p% of data (MT lengths).
+        - mt_nr (int): Number of MT.
+        - l_mu (float): Mean MT length of n/all data entries (MT lengths).
+        - l_max (float): Max MT length of n/all data entries (MT lengths).
 
     Returns:
         - None
@@ -154,8 +155,8 @@ def ad_document(inf_dat,mt_nr,l_max,l_mu):
         "SIM_ID": SIM_ID,                                          #Simulation ID
         "INF_ID": INF_ID,                                          #Inferance ID
         "mt_nr": mt_nr,                                            #Number of MT in p% of data                 
-        "l_max (\u03BCm)": round(l_max,3),                         #Max MT lenght in p% of data               
-        "l_mu (\u03BCm)": round(l_mu,3),                           #Mean MT lenght in p% of data
+        "l_max (\u03BCm)": round(l_max,3),                         #Max MT length in p% of data               
+        "l_mu (\u03BCm)": round(l_mu,3),                           #Mean MT length in p% of data
         "alpha_inf (-)": round(stats.iloc[0,0],2),                 #Inferred stability parameter (-)
         "inf_r (1/s)": round(stats.iloc[5,0],2),                   #Inferred turnover rate (1/s)
         "inf_kappa (1/\u03BCm s)": round(stats.iloc[6,0],2),       #Inferred severing rate (1/µm s)
@@ -244,7 +245,7 @@ def ad_make_pdist(inf_dat,dat_b,b,l_max):
         - inf_dat (arviz.data.inference_data.InferenceData): Object that contains the samples.
         - dat_b (numpy.ndarray of int): Binned data (MT lengths).
         - b (numpy.ndarray of float): Position of bins.
-        - l_max (float): Max MT lenght in p% of data (MT lengths).
+        - l_max (float): Max MT length in p% of data (MT lengths).
 
     Returns:
         - None
@@ -284,7 +285,7 @@ def ad_make_pdist(inf_dat,dat_b,b,l_max):
 ########################################## MAIN ##########################################
 
 #### ENTER DATA HERE  ####
-SIM_ID = "enter sim_SIM_ID here"
+SIM_ID = "Enter sim_SIM_ID here"
 COMMENT = "Here could be your comment."
 
 ### Make paths ###

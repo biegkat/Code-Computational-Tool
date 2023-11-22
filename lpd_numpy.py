@@ -1,5 +1,5 @@
 """This module solves a second order differntial equation to calculate the steady state
-microtubule (MT) lenght disribution given 'float' parameters.
+microtubule (MT) length disribution given 'float' parameters.
 """
 import numpy as np
 from scipy.linalg import solve

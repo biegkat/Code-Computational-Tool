@@ -146,7 +146,7 @@ def warmup(l,dt):
 
     #Plot MTlength
     plt.plot(t,l_mu)
-    plt.axhline(y=VG/R, color="orange", linestyle="--",label="mean MT length if kappa = 0")
+    plt.axhline(y=VG/R, color="orange", linestyle="--",label="mean MT length without severing")
     plt.xlabel("Number of timesteps")
     plt.ylabel("Mean MT length (µm)")
     plt.legend()
@@ -157,7 +157,7 @@ def warmup(l,dt):
     count, bins, ignored = plt.hist(l, 60, density=True)
     plt.title("MT length distibution after warm-up")
     plt.xlabel("Length (µm)")
-    plt.ylabel("Number of MT")
+    plt.ylabel("Count (normalized)")
     plt.savefig(os.path.join(folder_path, "MTdistritubtion.png"))
     plt.close()
 
@@ -190,7 +190,7 @@ def simulation(l,dt):
     out = np.array([])
     t = np.linspace(0, N_S, N_S, endpoint=True)
 
-    while i < REP:
+    while i < RHO:
         for ti in t:
             counts.append(count)
             mt_nr.append(np.size(l))
@@ -211,14 +211,14 @@ def simulation(l,dt):
     file.close()
 
     ## Analyis/Plots ## 
-    t = np.linspace(0, N_S*REP, N_S*REP, endpoint=True)
+    t = np.linspace(0, N_S*RHO, N_S*RHO, endpoint=True)
 
     #Plot MTnumber
-    i = 0
-    while i < REP:
+    i = 1
+    while i < RHO:
         plt.plot(N_S*(i+1),mt_nr[N_S*(i+1)-1],color="red", marker="o",zorder=2)
         i+=1
-    plt.legend(["MT length output"], loc="upper left")
+    plt.legend(["MT length output"])
     plt.plot(t,mt_nr,zorder=1)
     plt.xlabel("Number of timesteps")
     plt.ylabel("Number of MT")
@@ -227,11 +227,11 @@ def simulation(l,dt):
     
     #Plot MTlength
     plt.axhline(y=VG/R, color="orange", linestyle="--",zorder=2)
-    i = 0
-    while i < REP:
-        plt.plot(N_S*(i+1),l_mu[N_S*(i+1)-1],color="red", marker="o",zorder=3)
+    i = 1
+    while i < RHO:
+        plt.plot(N_S*(i+1),l_mu[N_S*(i+1)-1],color="red", marker="o",zorder=2)
         i+=1
-    plt.legend(["mean MT length if kappa = 0","MT length output"], loc="upper left")
+    plt.legend(["mean MT length if without severing","MT length output"])
     plt.plot(t,l_mu,zorder=1)
     plt.xlabel("Number of timesteps")
     plt.ylabel("Mean MT length (µm)")
@@ -289,7 +289,7 @@ def scale_kappa_dim_max(l):
     Returns:
         - kappa_max (float): Non dimensional turnover rate (-), scaled with l_max.
     """
-    kappa_max = KAPPA*max(l)/VG
+    kappa_max = KAPPA*max(l)**2/VG
     return kappa_max
 
 def scale_kappa_dim_mu(l):
@@ -301,7 +301,7 @@ def scale_kappa_dim_mu(l):
     Returns:
         - kappa_mu (float): Non dimensional turnover rate (-), scaled with l_mu.
     """
-    kappa_mu = KAPPA*np.mean(l)/VG
+    kappa_mu = KAPPA*np.mean(l)**2/VG
     return kappa_mu
 
 def document(l):
@@ -332,7 +332,7 @@ def document(l):
         "N_W": N_W,                                         #Number of timesteps during warm up
         "DT_S (s/timestep)": DT_S,                          #Timestep during simulation (s/timestep)
         "N_S": N_S,                                         #Number of timesteps between length distribution output(s)
-        "REP": REP,                                         #Number of length distribution outputs
+        "RHO": RHO,                                         #Number of length distribution outputs
         "Comment": COMMENT                                  #Comment 
     }
 
@@ -379,7 +379,7 @@ DT_W = 0.01                             #Timestep during warm up (s/timestep)
 N_W = 2                                 #Number of timesteps during warm up
 DT_S = 0.001                            #Timestep during simulation (s/timestep)             
 N_S = 2                                 #Number of timesteps between length distribution output(s)
-REP = 4                                 #Number of length distribution outputs
+RHO = 4                                 #Number of length distribution outputs
 
 COMMENT = "Here could be your Comment"
 

@@ -22,8 +22,8 @@ def md_load_data():
 
     Returns:
         - dat (numpy.ndarray of float): data (MT lengths) scaled to the max length.
-        - l_mu (float): Mean MT lenght in data (MT lengths).
-        - l_max (float): Max MT lenght in data (MT lengths).
+        - l_mu (float): Mean MT length in data (MT lengths).
+        - l_max (float): Max MT length in data (MT lengths).
         - mt_nr (int): Number of MT in data (MT lengths).
     """
 
@@ -56,8 +56,8 @@ def scale_r_max_mu(r_max,l_max,l_mu):
 
     Args:
         - r_max (float): Non dimensional turnover rate (-), scaled with l_max.
-        - l_max (float): Max MT lenght in p% of data.
-        - l_mu (float): Mean MT lenght in p% of data.
+        - l_max (float): Max MT length in p% of data.
+        - l_mu (float): Mean MT length in p% of data.
 
     Returns:
         - r_mu (float): Non dimensional turnover rate (-), scaled with l_mu.
@@ -70,8 +70,8 @@ def scale_kappa_max_mu(kappa_max,l_max,l_mu):
 
     Args:
         - kappa_max (float): Non dimensional severing rate (-), scaled with l_max.
-        - l_max (float): Max MT lenght in p% of data.
-        - l_mu (float): Mean MT lenght in p% of data.
+        - l_max (float): Max MT length in p% of data.
+        - l_mu (float): Mean MT length in p% of data.
 
     Returns:
         - kappa_mu (float): Non dimensional severing rate (-), scaled with l_mu.
@@ -85,8 +85,8 @@ def md_document(inf_dat,mt_nr,l_max,l_mu):
     Args:
         - inf_dat (arviz.data.inference_data.InferenceData): Object that contains the samples.
         - mt_nr (int): Number of MT in p% of data (MT lengths).
-        - l_mu (float): Mean MT lenght in p% of data (MT lengths).
-        - l_max (float): Max MT lenght in p% of data (MT lengths).
+        - l_mu (float): Mean MT length in p% of data (MT lengths).
+        - l_max (float): Max MT length in p% of data (MT lengths).
 
     Returns:
         - None
@@ -96,8 +96,8 @@ def md_document(inf_dat,mt_nr,l_max,l_mu):
     variables = {
         "INF_ID": INF_ID,                                          #Inferance ID
         "mt_nr": mt_nr,                                            #Number of MT in p% of data                 
-        "l_max (\u03BCm)": round(l_max,3),                         #Max MT lenght in p% of data               
-        "l_mu (\u03BCm)": round(l_mu,3),                           #Mean MT lenght in p% of data
+        "l_max (\u03BCm)": round(l_max,3),                         #Max MT length in p% of data               
+        "l_mu (\u03BCm)": round(l_mu,3),                           #Mean MT length in p% of data
         "alpha_inf (-)": round(stats.iloc[0,0],2),                 #Inferred stability parameter (-)
         "inf_r_max (-)": round(stats.iloc[1,0],2),                 #Inferred non dimensional turnover rate (-), scaled with l_max
         "inf_kappa_max (-)": round(stats.iloc[2,0],2),             #Inferred non dimensional severing rate (-), scaled with l_max
@@ -188,7 +188,7 @@ def md_make_pdist(inf_dat,dat_b,b,l_max):
         - inf_dat (arviz.data.inference_data.InferenceData): Object that contains the samples.
         - dat_b (numpy.ndarray of int): Binned data (MT lengths).
         - b (numpy.ndarray of float): Position of bins.
-        - l_max (float): Max MT lenght in p% of data (MT lengths).
+        - l_max (float): Max MT length in p% of data (MT lengths).
 
     Returns:
         - None

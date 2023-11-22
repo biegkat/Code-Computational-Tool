@@ -1,11 +1,11 @@
 """This module solves a second order differntial equation to calculate the steady state
-microtubule (MT) lenght disribution given 'pytensor.tensor.var.TensorVariable' parameters.
+microtubule (MT) length disribution given 'pytensor.tensor.var.TensorVariable' parameters.
 """
 import numpy as np
 import pytensor.tensor as pt
 
-NL = 100
-LMAX = 1.0
+NL = 100                    #Number of grid points
+LMAX = 1.0                  #LMAX=1 -> using scaled parameters
 delta = LMAX/(NL-1)
 
 ### Define first derivative (pytensor) ###
